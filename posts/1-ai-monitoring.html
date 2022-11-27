@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>Прогнозирование очередей</title>
+
+        <!-- Bootstrap Core CSS -->
+        <link href="https://julichi.github.io/doc_projects/theme/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="https://julichi.github.io/doc_projects/theme/css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Code highlight color scheme -->
+            <link href="https://julichi.github.io/doc_projects/theme/css/code_blocks/darkly.css" rel="stylesheet">
+
+
+        <!-- Custom Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+        <meta name="description" content="Система прогнозирования количества посетителей в точках продаж с использованием искусственного интеллекта">
+
+        <meta name="author" content="julichi">
+
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="Портфолио System Analyst">
+
+	<meta property="og:type" content="article">
+            <meta property="article:author" content="https://julichi.github.io/doc_projects/author/julichi.html">
+	<meta property="og:url" content="https://julichi.github.io/doc_projects/posts/1-ai-monitoring.html">
+	<meta property="og:title" content="Прогнозирование очередей">
+	<meta property="article:published_time" content="2022-08-05 10:20:00+03:00">
+            <meta property="og:description" content="Система прогнозирования количества посетителей в точках продаж с использованием искусственного интеллекта">
+
+            <meta property="og:image" content="https://julichi.github.io/doc_projects/theme/images/post-bg.jpg">
+</head>
+
+<body class="article-posts/1-ai-monitoring">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="https://julichi.github.io/doc_projects/">Портфолио System Analyst</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+        <header class="intro-header" style="background-image: url('https://julichi.github.io/doc_projects/theme/images/post-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Прогнозирование очередей</h1>
+                        <span class="meta">Posted by
+                                <a href="https://julichi.github.io/doc_projects/author/julichi.html">julichi</a>
+                             on Пт 05 Август 2022
+                        </span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <!-- Post Content -->
+    <article>
+        <h2>Постановка задачи</h2>
+<p>Крупная ритейл-компания по результатам аудита процессов определила ряд проблем, имеющих место в контактном центре (КЦ) и точках продаж (ТП), была выявлена проблематика: наличие непрогнозируемых очередей в ТП. Проблема ведёт к потере клиентов, низкому показателю клиентского сервиса, а также к отрицательному позиционированию компании на рынке.  Для решения данных проблем руководство компании принимает решение внедрить автоматизацию процессов с использованием технологий искусственного интеллекта. <strong>Предложите и сформируйте решение проблемы с применением  технологий компьютерного зрения (computer vision).</strong></p>
+<p>Рассматриваемые задачи:</p>
+<ol>
+<li>Контроль количества посетителей в ТП;</li>
+<li>Прогнозирование количества посетителей в ТП;</li>
+<li>Отправка отчетности и уведомление.</li>
+</ol>
+<p>При решении необходимо учитывать, что каждая точка ТП уже оборудована видеонаблюдением, присутствует общая система 
+видеонаблюдения CMS (Content Management System для отрасли видеонаблюдения). В предложении необходимо отразить 
+<strong>User story, HLD схему решения, схему бизнес-процесса(ов) на основании рассматриваемых задач</strong>. 
+Поскольку систему планируется запускать в формате MVP, необходимо сформировать перечень проверяемых гипотез (1–2) 
+и критерии их достижения.</p>
+<hr>
+<h2>Обоснование выбора</h2>
+<p>С точки зрения крупной ритейл-компании оффлайн-обслуживание имеет низкий порог вхождения новых клиентов, а 
+неудовлетворённость обслуживания стимулирует больший отток клиентов.</p>
+<p>Из предложенных заданий было выбрано задание №2, поскольку решение данной проблемы поможет увеличить не только 
+количество довольных клиентов, но и расширить клиентскую базу в целом.</p>
+<hr>
+<h2>User story</h2>
+<p><strong>Я</strong>, как менеджер точки продаж
+<strong>хочу</strong> получать уведомления и отчёты о состоянии очередей в точке продаж,
+<strong>для того чтобы</strong> избежать непрогнозируемых очередей.</p>
+<hr>
+<h2>HLD схема решения</h2>
+<h4>1. Карточка системы</h4>
+<p><strong>Заказчик:</strong> Крупная ритейл-компания.</p>
+<p><strong>Исполнитель:</strong> Команда_A.</p>
+<p><strong>Основные компоненты:</strong> CMS (Система видеонаблюдения), Company_Back (бэк-система компании), Company_Front (фронт-система сотрудника компании), Мобильное устройство сотрудника.</p>
+<hr>
+<h4>2. Архитектура</h4>
+<p><img alt="Alt Text" src="https://julichi.github.io/doc_projects/images/1-ai-monitoring/1-hld-scheme.png"></p>
+<hr>
+<h4>3. Описание модулей основных компонентов</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">№</th>
+<th style="text-align: center;">Система</th>
+<th style="text-align: center;">Модуль</th>
+<th>Функции модулей</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td><br></td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">CMS</td>
+<td style="text-align: center;">Модуль сбора <br> данных</td>
+<td>1. Собирает данные с камер наблюдения и перенаправляет их в облачное хранилище. <br> 2. Отправляет переформатированные данные в CMS.Модуль анализа трафика очереди. <br> 3. По запросу от системы Company_Back предоставляет видео с камер наблюдения.</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td><br></td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">CMS</td>
+<td style="text-align: center;">Модуль анализа <br> трафика очереди</td>
+<td>1. Анализирует видео с камер наблюдения. <br> 2. Маркирует видео согласно заложенной логике. <br> 3. При определённых правилах отправляет данные в CMS.Модуль уведомлений. <br> 4. Отправляет аналитические данные в CMS.Модуль прогнозирования очередей</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td><br></td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">CMS</td>
+<td style="text-align: center;">Модуль уведомлений</td>
+<td>1. Собирает данные для уведомлений. <br> 2. Хранит данные для уведомлений. <br> 3. Формирует уведомления и отправляет их в Шлюз уведомлений.</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td><br></td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">CMS</td>
+<td style="text-align: center;">Модуль прогнозирования <br> очередей</td>
+<td>1. Прогнозирует очереди. <br> 2. Отправляет данные для CMS. Модуль отчётности. <br>  3. Отправляет данные для CMS. Модуль уведомлений.</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td><br></td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">CMS</td>
+<td style="text-align: center;">Модуль отчётности</td>
+<td>1. Собирает и хранит данные для отчётности. <br>  2. По запросу от системы Company_Back предоставляет данные для отчётности</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td><br></td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">Company_Back</td>
+<td style="text-align: center;">Модуль сбора <br> уведомлений</td>
+<td>1. Собирает уведомления от CMS и отправляет в Company_Front и на Мобильное устройство сотрудника. <br> 2. Хранит уведомления от CMS.3. По запросу от Company_Front формирует список уведомлений за указанный период.</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td><br></td>
+</tr>
+<tr>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">Company_Back</td>
+<td style="text-align: center;">Модуль запроса <br> данных для отчётности</td>
+<td>По запросу от Company_Front запрашивает данные из CMS, формирует отчёт для отображения в Company_Front.</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td><br></td>
+</tr>
+<tr>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">Company_Back</td>
+<td style="text-align: center;">Модуль предоставления <br> видео с камер наблюдения</td>
+<td>По запросу от Company_Front запрашивает данные из CMS и предоставляет видео для отображения в Company_Front.</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td><br></td>
+</tr>
+<tr>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">Company_Front</td>
+<td style="text-align: center;">-</td>
+<td>Позволяет сотруднику формировать и скачивать отчётность, получать входящие уведомления и просматривать историю уведомлений, а также запрашивать видео с камер наблюдения.</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td><br></td>
+</tr>
+<tr>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">Мобильное устройство <br> сотрудника</td>
+<td style="text-align: center;">-</td>
+<td>Позволяет получать SMS-уведомления о прогнозах или текущем состоянии очереди в точке продаж.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Схема бизнес-процесса</h2>
+<hr>
+<h4>1. Оповещение менеджера о состоянии очереди</h4>
+<p><img alt="Alt Text" src="https://julichi.github.io/doc_projects/images/1-ai-monitoring/2-uml-allert.png"></p>
+<hr>
+<h4>2. Просмотр истории уведомлений</h4>
+<p><img alt="Alt Text" src="https://julichi.github.io/doc_projects/images/1-ai-monitoring/3-uml-allert-history.png"></p>
+<hr>
+<h4>3. Просмотр и сохранение отчётности</h4>
+<p><img alt="Alt Text" src="https://julichi.github.io/doc_projects/images/1-ai-monitoring/4-uml-report.png"></p>
+<hr>
+<h4>4. Просмотр видео с точки продаж</h4>
+<p><img alt="Alt Text" src="https://julichi.github.io/doc_projects/images/1-ai-monitoring/5-uml-video.png"></p>
+<hr>
+<h2>Проверяемые гипотезы</h2>
+<h4>Гипотеза 1.</h4>
+<p>Предположим, что непрогнозируемые очереди возникают в выходные и праздничные дни в дневное время после полудня.
+Критерии достижения гипотезы:</p>
+<ol>
+<li>Необходимо проанализировать данные с камер видеонаблюдения за период N: разделить видеопоток на части по 15 минут и промаркировать их по уровню скопления людей, определённому эмпирическим путём, например: нет очереди, минимальный, средний, высокий, критический уровни очереди.</li>
+<li>По результатам анализа данных с камер видеонаблюдения сформировать таблицу с данными: точка продаж; дата, время с учётом часового пояса точки продаж; категория дня недели (будний, выходной); является ли день официальным праздником (true/false); уровень скопления людей.</li>
+<li>По табличным данным, используя статистические методы, построить профили нагрузки на точку продаж и сравнить показатели для доказательства или опровержения гипотезы.</li>
+</ol>
+<hr>
+<h4>Гипотеза 2.</h4>
+<p>Предположим, что непрогнозируемые очереди возникают в точках продаж, которые находятся в Торговом центре (ТЦ) или поблизости с ним.
+Критерии достижения гипотезы:</p>
+<ol>
+<li>Необходимо проанализировать данные с камер видеонаблюдения за период N: разделить видеопоток на части по 15 минут и промаркировать их по уровню скопления людей, определённому эмпирическим путём, например: нет очереди, минимальный, средний, высокий, критический уровни очереди.</li>
+<li>Составить карту торговых точек и промаркировать данные по принципу расположения с Торговым центром: в ТЦ, на расстоянии до N метров до ТЦ, на расстоянии более N метров до ТЦ, и так далее.</li>
+<li>По результатам анализа данных с камер видеонаблюдения и карты расположения точек продаж сформировать таблицу с данными: точка продаж; дата, время с учётом часового пояса точки продаж; расположение относительно Торгового центра; уровень скопления людей.</li>
+<li>По табличным данным, используя статистические методы, построить профили нагрузки на точку продаж и сравнить показатели для доказательства или опровержения гипотезы.</li>
+</ol>
+    </article>
+
+
+    <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                    </ul>
+<p class="copyright text-muted">
+    Blog powered by <a href="http://getpelican.com">Pelican</a>,
+    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  julichi
+</p>                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="https://julichi.github.io/doc_projects/theme/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://julichi.github.io/doc_projects/theme/js/bootstrap.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="https://julichi.github.io/doc_projects/theme/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
