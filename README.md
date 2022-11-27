@@ -1,2 +1,3 @@
 # doc_projects
-My SA portfolio
+My portfolio with SA cases.
+See here: https://julichi.github.io/doc_projects/
